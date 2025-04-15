@@ -1,0 +1,16 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.3
+    hooks:
+      - id: ruff
+
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: pytest # Команда для запуска тестов
+        language: system # Указывает, что команда уже установлена в системе/окружении
+        types: [python] # На каких типах файлов запускать (можно убрать, если не нужно)
+        pass_filenames: false # Не передавать имена файлов в pytest по умолчанию
+        # Дополнительные аргументы, если нужны:
+        # args: ["-v", "-x"]
