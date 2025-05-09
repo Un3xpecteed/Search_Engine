@@ -13,9 +13,9 @@
 		"editor.defaultFormatter": "charliermarsh.ruff",
 		// Настраиваем действия при сохранении ИМЕННО для Python файлов
 		"editor.codeActionsOnSave": {
-			"source.fixAll": true, // Используем Ruff для автоисправления проблем линтинга
-			"source.organizeImports": true // Используем Ruff для организации импортов (замена isort)
-		}
+            "source.fixAll": "explicit",
+            "source.organizeImports": "explicit"
+        }
 	},
 	// Отключаем старый провайдер форматирования Python, т.к. используем Ruff
 	"python.formatting.provider": "none",
@@ -45,7 +45,7 @@
 		"**/Thumbs.db": true,
 
 		// Специфичные для Python и окружения разработки
-		"**/.venv": true, // Виртуальное окружение
+		
 		"**/__pycache__": true, // Байт-код Python
 		"**/.ruff_cache": true, // Кеш Ruff
 		"**/.pytest_cache": true, // Кеш Pytest (если используется)

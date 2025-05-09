@@ -1,0 +1,83 @@
+Compose can now delegate builds to bake for better performance.
+ To do so, set COMPOSE_BAKE=true.
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [app internal] load build definition from Dockerfile
+#1 transferring dockerfile: 657B done
+#1 DONE 0.0s
+
+#2 [app auth] library/python:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [app internal] load metadata for docker.io/library/python:3.13-slim
+#3 DONE 1.5s
+
+#4 [app internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [app  1/10] FROM docker.io/library/python:3.13-slim@sha256:60248ff36cf701fcb6729c085a879d81e4603f7f507345742dc82d4b38d16784
+#5 DONE 0.0s
+
+#6 [app  2/10] WORKDIR /app
+#6 CACHED
+
+#7 [app internal] load build context
+#7 transferring context: 3.37kB done
+#7 DONE 0.0s
+
+#8 [app  3/10] RUN echo "--- Attempting to COPY app contents ---"
+#8 0.134 --- Attempting to COPY app contents ---
+#8 DONE 0.1s
+
+#9 [app  4/10] COPY app/. ./
+#9 DONE 0.0s
+
+#10 [app  5/10] RUN echo "--- Listing /app contents AFTER copying app/ ---"
+#10 0.143 --- Listing /app contents AFTER copying app/ ---
+#10 DONE 0.1s
+
+#11 [app  6/10] RUN ls -la
+#11 0.125 total 60
+#11 0.125 drwxr-xr-x 1 root root  4096 May  7 23:34 .
+#11 0.125 drwxr-xr-x 1 root root  4096 May  8 23:30 ..
+#11 0.125 -rw-r--r-- 1 root root     1 Apr 15 23:03 __init__.py
+#11 0.125 drwxr-xr-x 2 root root  4096 May  8 00:00 __pycache__
+#11 0.125 -rw-r--r-- 1 root root  2687 May  7 23:43 database.py
+#11 0.125 -rw-r--r-- 1 root root 15215 May  8 08:58 main.py
+#11 0.125 -rw-r--r-- 1 root root  1651 May  7 23:44 models.py
+#11 0.125 -rw-r--r-- 1 root root   837 May  7 23:44 schemas.py
+#11 0.125 -rw-r--r-- 1 root root 10475 May  8 08:58 search_engine.py
+#11 0.125 -rw-r--r-- 1 root root   113 May  1 22:51 test.py
+#11 DONE 0.1s
+
+#12 [app  7/10] RUN echo "--- Attempting to COPY alembic contents ---"
+#12 0.162 --- Attempting to COPY alembic contents ---
+#12 DONE 0.2s
+
+#13 [app  8/10] COPY alembic/. ./alembic/
+#13 DONE 0.0s
+
+#14 [app  9/10] RUN echo "--- Listing /app/alembic contents AFTER copying alembic/ ---"
+#14 0.112 --- Listing /app/alembic contents AFTER copying alembic/ ---
+#14 DONE 0.1s
+
+#15 [app 10/10] RUN ls -la ./alembic
+#15 0.118 total 28
+#15 0.118 drwxr-xr-x 5 root root 4096 Apr 23 21:02 .
+#15 0.118 drwxr-xr-x 1 root root 4096 May  8 23:30 ..
+#15 0.118 drwxr-xr-x 2 root root 4096 May  8 00:02 __pycache__
+#15 0.118 -rw-r--r-- 1 root root 3830 May  8 00:02 env.py
+#15 0.118 -rw-r--r-- 1 root root  689 Apr 22 11:16 script.py.mako
+#15 0.118 drwxr-xr-x 3 root root 4096 Apr 23 21:05 versions
+#15 0.118 drwxr-xr-x 2 root root 4096 Apr 23 21:02 versions_sqlite_backup
+#15 DONE 0.1s
+
+#16 [app] exporting to image
+#16 exporting layers 0.0s done
+#16 writing image sha256:af90d41fa01319db3049be99dae00ac7ba701da43a8949171e0e8336c5aed5ee done
+#16 naming to docker.io/library/vs_project-app done
+#16 DONE 0.0s
+
+#17 [app] resolving provenance for metadata file
+#17 DONE 0.0s

@@ -1,0 +1,5 @@
+# docker-compose.debug.yml
+services:
+  app:
+    build:
+      dockerfile: Dockerfile.debug # Указываем на наш отладочный Dockerfile

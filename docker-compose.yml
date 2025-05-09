@@ -1,0 +1,65 @@
+# docker-compose.yml (ВЕРСИЯ ДЛЯ ТЕСТИРОВАНИЯ - С ОТКЛЮЧЕННЫМ VOLUME КОДА)
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: postgres_db
+    volumes:
+      # Оставляем volume для данных БД
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-search_engine_db}
+      POSTGRES_USER: ${POSTGRES_USER:-search_engine_app_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-123}
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-search_engine_app_user} -d ${POSTGRES_DB:-search_engine_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  cache:
+    image: redis:7-alpine
+    container_name: redis_cache
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  app:
+    build:
+      context: . # Собираем образ из текущей директории
+      dockerfile: Dockerfile # Явно указываем имя Dockerfile
+    container_name: search_app
+    depends_on:
+      db:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-search_engine_app_user}:${POSTGRES_PASSWORD:-123}@db:5432/${POSTGRES_DB:-search_engine_db}
+      REDIS_URL: redis://cache:6379
+      # PYTHONPATH не нужен
+      ENV_TYPE: ${ENV_TYPE:-development}
+    volumes:
+      # --- ВАЖНО: Volume для кода приложения ЗАКОММЕНТИРОВАН для теста ---
+      # Это заставит контейнер использовать код, который был скопирован в образ при сборке.
+      # - ./app:/app 
+
+      # Оставляем volumes для alembic, так как они не должны влиять на ModuleNotFoundError
+      - ./alembic:/app/alembic   
+      - ./alembic.ini:/app/alembic.ini 
+      
+    # Команда запуска берется из Dockerfile (CMD).
+    restart: unless-stopped
+
+volumes:
+  postgres_data: # Оставляем volume для данных Postgres

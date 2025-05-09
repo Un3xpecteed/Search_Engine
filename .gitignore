@@ -129,7 +129,7 @@ celerybeat.pid
 
 # Environments
 .env
-.venv
+.venv/
 env/
 venv/
 ENV/
@@ -174,3 +174,5 @@ cython_debug/
 .pypirc
 
 mytest.py
+
+.DS_Store

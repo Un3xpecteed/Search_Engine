@@ -7,11 +7,17 @@ requires-python = ">=3.13"
 dependencies = [
     "aiofiles>=24.1.0",
     "aiosqlite>=0.21.0",
-    "dataclasses>=0.8",
+    "alembic>=1.15.2",
+    "asgi-lifespan>=2.1.0",
+    "asyncpg>=0.30.0",
+    "black>=25.1.0",
+    "fakeredis>=2.28.1",
     "fastapi[standard]>=0.115.12",
     "greenlet>=3.1.1",
-    "pre-commit>=4.2.0",
+    "pre-commit>=4.2.0", # Обычно это dev-зависимость
+    "psycopg2-binary>=2.9.10",
     "pydantic>=2.11.0",
+    "pytest>=8.3.5", # Обычно это dev-зависимость
     "redis>=5.2.1",
     "requests>=2.32.3",
     "sqlalchemy>=2.0.40",
@@ -29,3 +35,14 @@ dev-dependencies = [
 
 [tool.ruff]
 line-length = 88
+
+# === ДОБАВЛЕННАЯ СЕКЦИЯ ===
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["app"] # Явно указываем, что только 'app' является пакетом для сборки
+# Или, если у вас есть и другие пакеты *внутри* app, которые нужно найти:
+# [tool.setuptools.packages.find]
+# include = ["app", "app.*"]
